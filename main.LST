@@ -1,0 +1,968 @@
+A51 MACRO ASSEMBLER  MAIN                                                                 10/17/2013 17:45:39 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02
+OBJECT MODULE PLACED IN main.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE main.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;#include <reg932.inc>
+                +1     2     ;*******************************************************************
+                +1     3     ;   P89LPC932 Special Function Registers
+                +1     4     ;*******************************************************************
+                +1     5     ;
+                +1     6     ;******* System ****************
+                +1     7     ;ACC        DATA        0xE0
+                +1     8     ;B          DATA        0xF0
+                +1     9     ;SP         DATA        0x81
+                +1    10     ;DPL        DATA        0x82
+                +1    11     ;DPH        DATA        0x83
+  00DF          +1    12     RSTSRC  DATA    0xDF
+                +1    13     ;PCON   DATA    0x87
+  00B5          +1    14     PCONA   DATA    0xB5
+                +1    15     ;PSW        DATA        0xD0
+  0095          +1    16     DIVM    DATA    0x95
+  0096          +1    17     TRIM    DATA    0x96
+  00A2          +1    18     AUXR1   DATA    0xA2
+                +1    19     ;------- Bit Addressable -------
+                +1    20     ;CY         BIT     0xD7
+                +1    21     ;AC         BIT     0xD6
+                +1    22     ;F0         BIT     0xD5
+                +1    23     ;RS1        BIT     0xD4
+                +1    24     ;RS0        BIT     0xD3
+                +1    25     ;OV         BIT     0xD2
+  00D1          +1    26     F1          BIT     0xD1
+                +1    27     ;P          BIT     0xD0
+  00B1          +1    28     XTAL1   BIT         0xB1
+  00B0          +1    29     XTAL2   BIT         0xB0
+                +1    30     ;******* Ports *****************
+                +1    31     ;P0         DATA        0x80
+  0084          +1    32     P0M1    DATA    0x84
+  0085          +1    33     P0M2    DATA    0x85
+  00F6          +1    34     PT0AD   DATA    0xF6
+                +1    35     ;P1         DATA        0x90
+  0091          +1    36     P1M1    DATA    0x91
+  0092          +1    37     P1M2    DATA    0x92
+                +1    38     ;P2         DATA        0xA0
+  00A4          +1    39     P2M1    DATA    0xA4
+  00A5          +1    40     P2M2    DATA    0xA5
+                +1    41     ;P3         DATA        0xB0
+  00B1          +1    42     P3M1    DATA    0xB1
+  00B2          +1    43     P3M2    DATA    0xB2
+                +1    44     ;******* EEPROM ****************
+  00F1          +1    45     DEECON  DATA    0xF1
+  00F2          +1    46     DEEDAT  DATA    0xF2
+  00F3          +1    47     DEEADR  DATA    0xF3
+                +1    48     ;******* Keypad ****************
+  0086          +1    49     KBMASK  DATA    0x86
+  0093          +1    50     KBPATN  DATA    0x93
+  0094          +1    51     KBCON   DATA    0x94
+                +1    52     ;------- Bit Addressable -------
+  0080          +1    53     KB0         BIT     0x80
+  0081          +1    54     KB1         BIT     0x81
+  0082          +1    55     KB2         BIT     0x82
+  0083          +1    56     KB3         BIT     0x83
+  0084          +1    57     KB4         BIT     0x84
+  0085          +1    58     KB5         BIT     0x85
+A51 MACRO ASSEMBLER  MAIN                                                                 10/17/2013 17:45:39 PAGE     2
+
+  0086          +1    59     KB6         BIT     0x86
+  0087          +1    60     KB7         BIT     0x87
+                +1    61     ;******* Comparators ***********
+  00AC          +1    62     CMP1    DATA    0xAC
+  00AD          +1    63     CMP2    DATA    0xAD
+                +1    64     ;------- Bit Addressable -------
+  0086          +1    65     CMP1O   BIT     0x86
+  0085          +1    66     CMPREF  BIT     0x85
+  0084          +1    67     CIN1A   BIT     0x84
+  0083          +1    68     CIN1B   BIT     0x83
+  0082          +1    69     CIN2A   BIT     0x82
+  0081          +1    70     CIN2B   BIT     0x81
+  0080          +1    71     CMP2O   BIT     0x80
+                +1    72     ;******* Serial Port ***********
+                +1    73     ;SCON   DATA    0x98
+                +1    74     ;SBUF   DATA    0x99
+  00A9          +1    75     SADDR   DATA    0xA9
+  00B9          +1    76     SADEN   DATA    0xB9
+  00BA          +1    77     SSTAT   DATA    0xBA
+  00BD          +1    78     BRGCON  DATA    0xBD
+  00BE          +1    79     BRGR0   DATA    0xBE
+  00BF          +1    80     BRGR1   DATA    0xBF
+                +1    81     ;------- Bit Addressable -------
+  009F          +1    82     FE          BIT     0x9F
+                +1    83     ;SM0        BIT     0x9F
+                +1    84     ;SM1        BIT     0x9E
+                +1    85     ;SM2        BIT     0x9D
+                +1    86     ;REN        BIT     0x9C
+                +1    87     ;TB8        BIT     0x9B
+                +1    88     ;RB8        BIT     0x9A
+                +1    89     ;TI         BIT     0x99
+                +1    90     ;RI         BIT     0x98
+                +1    91     ;RxD        BIT     0x91
+                +1    92     ;TxD        BIT     0x90
+                +1    93     ;******* SPI *******************
+  00E1          +1    94     SPSTAT  DATA    0xE1
+  00E2          +1    95     SPCTL   DATA    0xE2
+  00E3          +1    96     SPDAT   DATA    0xE3
+                +1    97     ;------- Bit Addressable -------
+  00A5          +1    98     SPICLK  BIT         0xA5
+  00A4          +1    99     SS          BIT     0xA4
+  00A3          +1   100     MISO    BIT         0xA3
+  00A2          +1   101     MOSI    BIT         0xA2
+                +1   102     ;******* IIC *******************
+  00D8          +1   103     I2CON   DATA    0xD8
+  00D9          +1   104     I2STAT  DATA    0xD9
+  00DA          +1   105     I2DAT   DATA    0xDA
+  00DB          +1   106     I2ADR   DATA    0xDB
+  00DC          +1   107     I2SCLL  DATA    0xDC
+  00DD          +1   108     I2SCLH  DATA    0xDD
+                +1   109     ;------ Bit Addressable --------
+  00DE          +1   110     I2EN    BIT         0xDE
+  00DD          +1   111     STA         BIT     0xDD
+  00DC          +1   112     STO         BIT     0xDC
+  00DB          +1   113     SI          BIT     0xDB
+  00DA          +1   114     AA          BIT     0xDA
+  00D8          +1   115     CRSEL   BIT         0xD8
+  0093          +1   116     SDA         BIT     0x93
+  0092          +1   117     SCL         BIT     0x92
+                +1   118     ;******* Timers ****************
+  00CA          +1   119     TPCR2L  DATA    0xCA
+  00CB          +1   120     TPCR2H  DATA    0xCB
+                +1   121     ;TCON   DATA    0x88
+                +1   122     ;TMOD   DATA    0x89
+                +1   123     ;TL0        DATA        0x8A
+                +1   124     ;TH0        DATA        0x8C
+A51 MACRO ASSEMBLER  MAIN                                                                 10/17/2013 17:45:39 PAGE     3
+
+                +1   125     ;TL1        DATA        0x8B
+                +1   126     ;TH1        DATA        0x8D
+  00CC          +1   127     TL2         DATA        0xCC
+  00CD          +1   128     TH2         DATA        0xCD
+  008F          +1   129     TAMOD   DATA    0x8F
+                +1   130     ;------- Bit Addressable -------
+                +1   131     ;TF1        BIT     0x8F
+                +1   132     ;TR1        BIT     0x8E
+                +1   133     ;TF0        BIT     0x8D
+                +1   134     ;TR0        BIT     0x8C
+                +1   135     ;IE1        BIT     0x8B
+                +1   136     ;IT1        BIT     0x8A
+                +1   137     ;IE0        BIT     0x89
+                +1   138     ;IT0        BIT     0x88
+  00CF          +1   139     PLLEN   BIT         0xCF
+  00CE          +1   140     HLTRN   BIT         0xCE
+  00CD          +1   141     HLTEN   BIT         0xCD
+  00CC          +1   142     ALTCD   BIT         0xCC
+  00CB          +1   143     ALTAB   BIT         0xCB
+  00CA          +1   144     TDIR2   BIT         0xCA
+  00C9          +1   145     TMOD21  BIT         0xC9
+  00C8          +1   146     TMOD20  BIT         0xC8
+                +1   147     ;T1         BIT     0x87
+                +1   148     ;T0         BIT     0x92
+                +1   149     ;******* Capture/Compare Unit **
+  00EA          +1   150     CCCRA   DATA    0xEA
+  00EB          +1   151     CCCRB   DATA    0xEB
+  00EC          +1   152     CCCRC   DATA    0xEC
+  00ED          +1   153     CCCRD   DATA    0xED
+  00C8          +1   154     TCR20   DATA    0xC8
+  00F9          +1   155     TCR21   DATA    0xF9
+  00C9          +1   156     TICR2   DATA    0xC9
+  00DE          +1   157     TISE2   DATA    0xDE
+  00E9          +1   158     TIFR2   DATA    0xE9
+  00CE          +1   159     TOR2L   DATA    0xCE
+  00CF          +1   160     TOR2H   DATA    0xCF
+                +1   161     ;******* Input Capture *********
+  00AA          +1   162     ICRAL   DATA    0xAA
+  00AB          +1   163     ICRAH   DATA    0xAB
+  00AE          +1   164     ICRBL   DATA    0xAE
+  00AF          +1   165     ICRBH   DATA    0xAF
+                +1   166     ;------- Bit Addressable -------
+  00A7          +1   167     ICA         BIT     0xA7
+  00A0          +1   168     ICB         BIT     0xA0
+                +1   169     ;******* Output Compare ********
+  00EE          +1   170     OCRAL   DATA    0xEE
+  00EF          +1   171     OCRAH   DATA    0xEF
+  00FA          +1   172     OCRBL   DATA    0xFA
+  00FB          +1   173     OCRBH   DATA    0xFB
+  00FC          +1   174     OCRCL   DATA    0xFC
+  00FD          +1   175     OCRCH   DATA    0xFD
+  00FE          +1   176     OCRDL   DATA    0xFE
+  00FF          +1   177     OCRDH   DATA    0xFF
+                +1   178     ;------- Bit Addressable -------
+  00A1          +1   179     OCD         BIT     0xA1
+  0097          +1   180     OCC         BIT     0x97
+  0096          +1   181     OCB         BIT     0x96
+  00A6          +1   182     OCA         BIT     0xA6
+                +1   183     ;******* Watchdog **************
+  00C2          +1   184     WFEED1  DATA    0xC2
+  00C3          +1   185     WFEED2  DATA    0xC3
+  00C1          +1   186     WDL         DATA        0xC1
+  00A7          +1   187     WDCON   DATA    0xA7
+                +1   188     ;******* Real Time Clock *******
+  00D3          +1   189     RTCL    DATA    0xD3
+  00D2          +1   190     RTCH    DATA    0xD2
+A51 MACRO ASSEMBLER  MAIN                                                                 10/17/2013 17:45:39 PAGE     4
+
+  00D1          +1   191     RTCCON  DATA    0xD1
+                +1   192     ;******* Interrupts ************
+  00A8          +1   193     IEN0    DATA    0xA8
+  00E8          +1   194     IEN1    DATA    0xE8
+  00B8          +1   195     IP0         DATA        0xB8
+  00B7          +1   196     IP0H    DATA    0xB7
+  00F8          +1   197     IP1         DATA        0xF8
+  00F7          +1   198     IP1H    DATA    0xF7
+                +1   199     ;------- Bit Addressable -------
+                +1   200     ;EA         BIT     0xAF
+  00AE          +1   201     EWDRT   BIT         0xAE
+  00AD          +1   202     EBO         BIT     0xAD
+                +1   203     ;ES         BIT     0xAC
+  00AC          +1   204     ESR         BIT     0xAC
+                +1   205     ;ET1        BIT     0xAB
+                +1   206     ;EX1        BIT     0xAA
+                +1   207     ;ET0        BIT     0xA9
+                +1   208     ;EX0        BIT     0xA8
+  00EF          +1   209     EIEE    BIT         0xEF
+  00EE          +1   210     EST         BIT     0xEE
+  00EC          +1   211     ECCU    BIT         0xEC
+  00EB          +1   212     ESPI    BIT         0xEB
+  00EA          +1   213     EC          BIT     0xEA
+  00E9          +1   214     EKBI    BIT         0xE9
+  00E8          +1   215     EI2C    BIT         0xE8
+  00BE          +1   216     PWDRT   BIT         0xBE
+  00BD          +1   217     PB0         BIT     0xBD
+                +1   218     ;PS         BIT     0xBC
+  00BC          +1   219     PSR         BIT     0xBC
+                +1   220     ;PT1        BIT     0xBB
+                +1   221     ;PX1        BIT     0xBA
+                +1   222     ;PT0        BIT     0xB9
+                +1   223     ;PX0        BIT     0xB8
+  00FF          +1   224     PIEE    BIT         0xFF
+  00FE          +1   225     PST         BIT     0xFE
+  00FC          +1   226     PCCU    BIT         0xFC
+  00FB          +1   227     PSPI    BIT         0xFB
+  00FA          +1   228     PCL     BIT         0xFA
+  00F9          +1   229     PKBI    BIT         0xF9
+  00F8          +1   230     PI2C    BIT         0xF8
+  0095          +1   231     RST         BIT     0x95
+                +1   232     ;INT1   BIT         0x94
+                +1   233     ;INT0   BIT         0x93
+                +1   234     
+                +1   235     
+                +1   236     
+                +1   237     
+                +1   238     
+                +1   239     
+                +1   240     
+                     241     
+                     242     
+----                 243     cseg at 0
+0000 020030          244             ljmp main       
+                     245             
+----                 246     cseg at 0x0030   
+0030                 247     main:
+0030 758400          248             mov p0m1,#0             ; set port 0 to bi-directional
+0033 759100          249             mov p1m1,#0             ; set port 1 to bi-directional
+0036 75A400          250             mov p2m1,#0             ; set port 2 to bi-directional
+0039 758900          251             mov TMOD,#0x00          ; sets TIMER 0 into mode 1 operation 
+003C 758C00          252             mov TH0, #0             ; presets a 16-bit value into TIMER 0 
+003F 758A00          253             mov TL0, #0             ; upper byte first and then lower byte
+                     254     
+                     255             ;setb ET0               ; enable TIMER 0 overflow interrupt
+                     256             ;setb EA                        ; set global interrupt enable bit
+A51 MACRO ASSEMBLER  MAIN                                                                 10/17/2013 17:45:39 PAGE     5
+
+                     257             ;setb TR0               ; start TIMER 0 counting
+0042 758180          258             mov sp, #0x80           ; initialize stack pointer to 0x80
+0045 115B            259             acall STARTUP           
+0047                 260     mainloop:
+0047 00              261             nop ; Insert code to call my functions from here.
+0048 7F00            262             mov r7, #0 ; zero register r7 : Keeping count value here.
+004A 20A02D          263             jb p2.0, NPLUS ; Add 1 to counter
+004D 20A132          264             jb p2.1, NMINUS ; Minus 1 from counter
+0050 20A736          265             jb p2.7, NRESET ; Store(R6) R7 then set again to zero
+0053 20A23C          266             jb p2.2, NSUM ; Sum Store(R6) with Current(R7) and act on these results
+0056 ED              267             mov A, r5
+0057 703A            268             jnz NCHLIGHT ; If R5 = 1 then light needs to change, otherwise do nothing 
+0059 80EC            269             sjmp mainloop
+                     270     
+005B                 271     startup:
+005B 317A            272             acall startupsound
+005D 3103            273             acall hline        ;horizontal line
+005F 3116            274             acall rhline   ;a line that goes back to led1
+0061 3129            275             acall vline        ;vertical line
+0063 313C            276             acall rvline   ;vertical line that goes back to led1
+0065 314F            277             acall flashleds;flashes leds 5x
+0067 7800            278             mov R0, #0
+0069 7900            279             mov R1, #0
+006B 7A00            280             mov R2, #0
+006D 7B00            281             mov R3, #0
+006F 7C00            282             mov R4, #0
+0071 7D01            283             mov R5, #1 ; will make light turn on when mainloop starts up
+0073 7E00            284             mov R6, #0
+0075 7F00            285             mov R7, #0
+0077 7400            286             mov A, #0
+0079 22              287             ret
+                     288     
+007A                 289     NPLUS:
+007A 22              290             ret ; need to write code here
+007B 0F              291             inc r7 ; increment the count holder register
+007C EF              292             mov A, r7
+007D 120093          293             lcall NCHLIGHT ; call the function to change the lights
+0080 606C            294             jz NROLLOVER ; Jump to the rollover label if a rollover occoured
+                     295             ; jz does not modify the SP, so I can use ret in NROLLOVER
+0082                 296     NMINUS:
+0082 EF              297             mov A, r7
+0083 1F              298             dec r7
+0084 120093          299             lcall NCHLIGHT ; call the label to change the lights
+0087 6065            300             jz NROLLOVER ; Jump if r7 was zero when minus was called
+                     301             ; jz does not modify the SP, so I can use ret in NROLLOVER
+                     302             ; jz 
+0089                 303     NRESET:
+0089 22              304             ret ; need to write code here
+008A 8F36            305             mov 0x36, r7 ; store the value of the count at 36H
+008C 7F00            306             mov r7, #0 ; clear the current count register
+008E 1200FC          307             lcall NBUTTONDELAY
+0091 22              308             ret
+0092                 309     NSUM:
+                     310             ; need to write this piece of code
+0092 22              311             ret
+0093                 312     NCHLIGHT: ; this function changes the lights, called when R5 != 0
+                     313             
+0093 7D00            314             mov r5, #0 ; reset the conditional
+                     315             ; Note: r7 holds the value to be compared with
+0095 EF              316             mov A, r7 ; moved r7 -> A for use with CJNE
+0096 B40F03          317             cjne A, #15, NSW14 ; GoTo 14  only if this is not 15
+0099 515B            318             acall NFIFTEEN
+009B 22              319             ret
+009C                 320     NSW14:
+                     321             ; Note: A should not change since there are no iterrupts running
+009C B40E03          322             cjne A, #14, NSW13
+A51 MACRO ASSEMBLER  MAIN                                                                 10/17/2013 17:45:39 PAGE     6
+
+009F 5156            323             acall NFOURTEEN
+00A1 22              324             ret
+00A2                 325     NSW13:
+00A2 B40D03          326             cjne A, #13, NSW12
+00A5 5151            327             acall NTHIRTEEN
+00A7 22              328             ret
+00A8                 329     NSW12:
+00A8 B40C03          330             cjne A, #12, NSW11
+00AB 514C            331             acall NTWELVE
+00AD 22              332             ret
+00AE                 333     NSW11:
+00AE B40B03          334             cjne A, #11, NSW10
+00B1 5147            335             acall NELEVEN
+00B3 22              336             ret
+00B4                 337     NSW10:
+00B4 B40A03          338             cjne A, #10, NSW9
+00B7 5142            339             acall NTEN
+00B9 22              340             ret
+00BA                 341     NSW9:
+00BA B40903          342             cjne A, #9, NSW8
+00BD 513F            343             acall NNINE
+00BF 22              344             ret
+00C0                 345     NSW8:
+00C0 B40803          346             cjne A, #8, NSW7
+00C3 513C            347             acall NEIGHT
+00C5 22              348             ret
+00C6                 349     NSW7:
+00C6 B40703          350             cjne A, #7, NSW6
+00C9 5139            351             acall NSEVEN
+00CB 22              352             ret
+00CC                 353     NSW6:
+00CC B40603          354             cjne A, #6, NSW5
+00CF 5136            355             acall NSIX
+00D1 22              356             ret
+00D2                 357     NSW5:
+00D2 B40503          358             cjne A, #5, NSW4
+00D5 5133            359             acall NFIVE
+00D7 22              360             ret
+00D8                 361     NSW4:
+00D8 B40403          362             cjne A, #4, NSW3
+00DB 5130            363             acall NFOUR
+00DD 22              364             ret
+00DE                 365     NSW3:
+00DE B40303          366             cjne A, #3, NSW2
+00E1 512D            367             acall NTHREE
+00E3 22              368             ret
+00E4                 369     NSW2:
+00E4 B40203          370             cjne A, #2, NSW1
+00E7 512A            371             acall NTWO
+00E9 22              372             ret
+00EA                 373     NSW1:
+00EA 5127            374             acall NONE
+00EC 22              375             ret
+                     376             ; End of the number switching code
+                     377             
+00ED 22              378             ret ; 
+00EE                 379     NROLLOVER:
+                     380             ; sound buzzer here
+00EE 787D            381             mov R0, #0x7D
+00F0 7900            382             mov R1, #0x00
+00F2 7A66            383             mov R2, #0x66
+00F4 7B0E            384             mov R3, #0x0E
+00F6 31B9            385             acall sound
+00F8 1200FC          386             lcall NBUTTONDELAY ; 
+00FB 22              387             ret ; return after this is called, because lcall is used for NBUTTONDELAY
+                     388             
+A51 MACRO ASSEMBLER  MAIN                                                                 10/17/2013 17:45:39 PAGE     7
+
+00FC                 389     NBUTTONDELAY:
+00FC 78FE            390             mov r0, #0xFE
+00FE 7912            391             mov r1, #0x12
+0100 316C            392             acall lightinner ; delay after any button press
+0102 22              393             ret
+                     394             
+                     395     ;Do a horizontal line of LEDS that turn themselves
+                     396     ;off when finished.
+0103                 397     hline:
+0103 31E7            398             acall led1w
+0105 31EE            399             acall led2w
+0107 31F5            400             acall led3w
+0109 31FC            401             acall led4w
+010B 5103            402             acall led5w
+010D 510A            403             acall led6w
+010F 5111            404             acall led7w
+0111 5118            405             acall led8w
+0113 511F            406             acall led9w
+0115 22              407             ret
+                     408     
+                     409     ;Do a horizontal line that turns around and goes backwards
+0116                 410     rhline:
+0116 511F            411             acall led9w
+0118 5118            412             acall led8w
+011A 5111            413             acall led7w
+011C 510A            414             acall led6w
+011E 5103            415             acall led5w
+0120 31FC            416             acall led4w
+0122 31F5            417             acall led3w
+0124 31EE            418             acall led2w
+0126 31E7            419             acall led1w
+0128 22              420             ret
+                     421     
+                     422     ;Do a vertical line starting at the top left and ending
+                     423     ;at the bottom right
+0129                 424     vline:
+0129 31E7            425             acall led1w
+012B 31FC            426             acall led4w
+012D 5111            427             acall led7w
+012F 5118            428             acall led8w
+0131 5103            429             acall led5w
+0133 31EE            430             acall led2w
+0135 31F5            431             acall led3w
+0137 510A            432             acall led6w
+0139 511F            433             acall led9w
+013B 22              434             ret
+                     435     
+                     436     ;Do a vertical line starting at bottom left and ending
+                     437     ;at top right
+013C                 438     rvline:
+013C 511F            439             acall led9w
+013E 510A            440             acall led6w
+0140 31F5            441             acall led3w
+0142 31EE            442             acall led2w
+0144 5103            443             acall led5w
+0146 5118            444             acall led8w
+0148 5111            445             acall led7w
+014A 31FC            446             acall led4w
+014C 31E7            447             acall led1w
+014E 22              448             ret
+                     449     
+                     450     ;Flash all LEDS 5x
+014F                 451     flashleds:
+014F 7A0A            452             mov R2, #0x0A
+0151                 453     flashloop:
+0151 31EB            454             acall led1t
+A51 MACRO ASSEMBLER  MAIN                                                                 10/17/2013 17:45:39 PAGE     8
+
+0153 31F2            455             acall led2t
+0155 31F9            456             acall led3t
+0157 5100            457             acall led4t
+0159 5107            458             acall led5t
+015B 510E            459             acall led6t
+015D 5115            460             acall led7t
+015F 511C            461             acall led8t
+0161 5123            462             acall led9t
+0163 3168            463             acall lightdelay
+0165 DAEA            464             djnz R2, flashloop
+0167 22              465             ret
+                     466     
+                     467     ;1000/1.085 =~ 921
+                     468     ;number of cycles in a millisecond
+                     469     ;about 10 cycles below so 92 cycles of this for a ms
+                     470     ;
+0168                 471     lightdelay:
+0168 78B0            472             mov R0, #0xB0
+016A 79B3            473             mov R1, #0xB3
+016C                 474     lightinner:
+016C 00              475             nop
+016D 00              476             nop
+016E 00              477             nop
+016F 00              478             nop
+0170 00              479             nop
+0171 00              480             nop
+0172 00              481             nop
+0173 D8F7            482             djnz R0, lightinner
+0175 78FF            483             mov R0, #0xFF
+0177 D9F3            484             djnz R1, lightinner
+0179 22              485             ret
+                     486     
+017A                 487     startupsound:
+                     488             ;2000khz
+                     489             ;500ms =~ 1000/1.085/167*500
+017A 78A7            490             mov R0, #0xA7
+017C 7900            491             mov R1, #0x00
+017E 7AC7            492             mov R2, #0xC7
+0180 7B0A            493             mov R3, #0x0A
+0182 31EB            494             acall led1t
+0184 31B9            495             acall sound
+                     496     
+                     497             ;1500 khz
+                     498             ;500ms =~ 1000/1.085/208*500
+0186 78D0            499             mov R0, #0xD0
+0188 7900            500             mov R1, #0x00
+018A 7AA7            501             mov R2, #0xA7
+018C 7B08            502             mov R3, #0x08
+018E 31F2            503             acall led2t
+0190 31B9            504             acall sound
+                     505     
+                     506     
+                     507             ;2250khz
+                     508             ;500ms =~ 1000/1.085/185*500
+0192 78BC            509             mov R0, #0xBC
+0194 7900            510             mov R1, #0x00
+0196 7ABB            511             mov R2, #0xBB
+0198 7B09            512             mov R3, #0x09
+019A 31F9            513             acall led3t
+019C 31B9            514             acall sound
+                     515     
+                     516             ;2500khz
+                     517             ;500ms =~ 1000/1.085/125*500
+019E 787D            518             mov R0, #0x7D
+01A0 7900            519             mov R1, #0x00
+01A2 7A66            520             mov R2, #0x66
+A51 MACRO ASSEMBLER  MAIN                                                                 10/17/2013 17:45:39 PAGE     9
+
+01A4 7B0E            521             mov R3, #0x0E
+01A6 5100            522             acall led4t
+01A8 5107            523             acall led5t
+01AA 510E            524             acall led6t
+01AC 5115            525             acall led7t
+01AE 511C            526             acall led8t
+01B0 5123            527             acall led9t
+01B2 31B9            528             acall sound
+01B4 3168            529             acall lightdelay
+01B6 3168            530             acall lightdelay
+01B8 22              531             ret
+                     532     
+                     533     ;sound ~~ hz / 12 in r1.r0
+                     534     ;these control the pitch
+                     535     ;mov R0, #0xA7   this is about 2 khz
+                     536     ;mov R1, #0x00   ^^^
+                     537     ;these are somewhere near the length
+                     538     ;mov R2, #0xFE   this is a long time...
+                     539     ;mov R3, #0xB3   usually have go guess this length
+                     540     ;But it's whatever you think it should be in
+                     541     ;multiples of r1.r0
+01B9                 542     sound:
+01B9 08              543             inc R0
+01BA 09              544             inc R1
+01BB 0A              545             inc R2
+01BC 0B              546             inc R3
+                     547     
+                     548             ;These back stuff up
+01BD E8              549             mov A, R0
+01BE FC              550             mov R4, A
+01BF E9              551             mov A, R1
+01C0 FD              552             mov R5, A
+                     553     
+01C1                 554     sound_inner:
+01C1 D8FE            555             djnz R0, sound_inner
+01C3 78FF            556             mov R0, #0xFF
+01C5 D9FA            557             djnz R1, sound_inner
+01C7 B297            558             cpl p1.7
+01C9 EC              559             mov A, R4
+01CA F8              560             mov R0, A
+01CB ED              561             mov A, R5
+01CC F9              562             mov R1, A
+01CD DAF2            563             djnz R2, sound_inner
+01CF 7AFF            564             mov R2, #0xFF
+01D1 DBEE            565             djnz R3, sound_inner
+01D3 22              566             ret
+                     567     
+01D4                 568     resetlights:
+01D4 D2A4            569             setb p2.4
+01D6 D285            570             setb p0.5
+01D8 D2A7            571             setb p2.7
+01DA D286            572             setb p0.6
+01DC D296            573             setb p1.6
+01DE D284            574             setb p0.4
+01E0 D2A5            575             setb p2.5
+01E2 D287            576             setb p0.7
+01E4 D2A6            577             setb p2.6
+01E6 22              578             ret
+                     579     
+01E7                 580     led1w:
+01E7 C2A4            581             clr p2.4
+01E9 3168            582             acall lightdelay
+01EB                 583     led1t:
+01EB B2A4            584             cpl p2.4
+01ED 22              585             ret
+                     586     
+A51 MACRO ASSEMBLER  MAIN                                                                 10/17/2013 17:45:39 PAGE    10
+
+01EE                 587     led2w:
+01EE C285            588             clr p0.5
+01F0 3168            589             acall lightdelay
+01F2                 590     led2t:
+01F2 B285            591             cpl p0.5
+01F4 22              592             ret
+                     593     
+01F5                 594     led3w:
+01F5 C2A7            595             clr p2.7
+01F7 3168            596             acall lightdelay
+01F9                 597     led3t:
+01F9 B2A7            598             cpl p2.7
+01FB 22              599             ret
+                     600     
+01FC                 601     led4w:
+01FC C286            602             clr p0.6
+01FE 3168            603             acall lightdelay
+0200                 604     led4t:
+0200 B286            605             cpl p0.6
+0202 22              606             ret
+                     607     
+0203                 608     led5w:
+0203 C296            609             clr p1.6
+0205 3168            610             acall lightdelay
+0207                 611     led5t:
+0207 B296            612             cpl p1.6
+0209 22              613             ret
+                     614     
+020A                 615     led6w:
+020A C284            616             clr p0.4
+020C 3168            617             acall lightdelay
+020E                 618     led6t:
+020E B284            619             cpl p0.4
+0210 22              620             ret
+                     621     
+0211                 622     led7w:
+0211 C2A5            623             clr p2.5
+0213 3168            624             acall lightdelay
+0215                 625     led7t:
+0215 B2A5            626             cpl p2.5
+0217 22              627             ret
+                     628     
+0218                 629     led8w:
+0218 C287            630             clr p0.7
+021A 3168            631             acall lightdelay
+021C                 632     led8t:
+021C B287            633             cpl p0.7
+021E 22              634             ret
+                     635     
+021F                 636     led9w:
+021F C2A6            637             clr p2.6
+0221 3168            638             acall lightdelay
+0223                 639     led9t:
+0223 B2A6            640             cpl p2.6
+0225 22              641             ret
+                     642             
+0226                 643     NZERO:
+                     644             ; no light given when the variable is zero
+0226 22              645             ret
+0227                 646     NONE:
+0227 B2A4            647             cpl p2.4
+0229 22              648             ret
+022A                 649     NTWO:
+022A B285            650             cpl p0.5
+022C 22              651         ret
+022D                 652     NTHREE:
+A51 MACRO ASSEMBLER  MAIN                                                                 10/17/2013 17:45:39 PAGE    11
+
+022D B2A7            653             cpl p2.7
+022F 22              654             ret
+0230                 655     NFOUR:
+0230 B286            656             cpl p0.6
+0232 22              657             ret
+0233                 658     NFIVE:
+0233 B296            659             cpl p1.6
+0235 22              660             ret
+0236                 661     NSIX:
+0236 B284            662             cpl p0.4
+0238 22              663             ret
+0239                 664     NSEVEN:
+0239 B2A5            665             cpl p2.5
+023B 22              666             ret
+023C                 667     NEIGHT:
+023C B287            668             cpl p0.7
+023E 22              669             ret
+023F                 670     NNINE:
+023F B2A6            671             cpl p2.6
+0241 22              672             ret
+0242                 673     NTEN:
+0242 B2A6            674             cpl p2.6
+0244 B2A4            675             cpl p2.4
+0246 22              676             ret
+0247                 677     NELEVEN:
+0247 B2A6            678             cpl p2.6
+0249 B285            679         cpl p0.5
+024B 22              680             ret
+024C                 681     NTWELVE:
+024C B2A6            682             cpl p2.6
+024E B2A7            683             cpl p2.7
+0250 22              684             ret
+0251                 685     NTHIRTEEN:
+0251 B2A6            686             cpl p2.6
+0253 B286            687             cpl p0.6
+0255 22              688             ret
+0256                 689     NFOURTEEN:
+0256 B2A6            690             cpl p2.6
+0258 B296            691             cpl p1.6
+025A 22              692             ret
+025B                 693     NFIFTEEN:
+025B B2A6            694             cpl p2.6
+025D B284            695             cpl p0.4
+025F 22              696             ret
+                     697     
+                     698     end
+A51 MACRO ASSEMBLER  MAIN                                                                 10/17/2013 17:45:39 PAGE    12
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AA . . . . . . . .  B ADDR   00D8H.2 A   
+ALTAB. . . . . . .  B ADDR   00C8H.3 A   
+ALTCD. . . . . . .  B ADDR   00C8H.4 A   
+AUXR1. . . . . . .  D ADDR   00A2H   A   
+BRGCON . . . . . .  D ADDR   00BDH   A   
+BRGR0. . . . . . .  D ADDR   00BEH   A   
+BRGR1. . . . . . .  D ADDR   00BFH   A   
+CCCRA. . . . . . .  D ADDR   00EAH   A   
+CCCRB. . . . . . .  D ADDR   00EBH   A   
+CCCRC. . . . . . .  D ADDR   00ECH   A   
+CCCRD. . . . . . .  D ADDR   00EDH   A   
+CIN1A. . . . . . .  B ADDR   0080H.4 A   
+CIN1B. . . . . . .  B ADDR   0080H.3 A   
+CIN2A. . . . . . .  B ADDR   0080H.2 A   
+CIN2B. . . . . . .  B ADDR   0080H.1 A   
+CMP1 . . . . . . .  D ADDR   00ACH   A   
+CMP1O. . . . . . .  B ADDR   0080H.6 A   
+CMP2 . . . . . . .  D ADDR   00ADH   A   
+CMP2O. . . . . . .  B ADDR   0080H.0 A   
+CMPREF . . . . . .  B ADDR   0080H.5 A   
+CRSEL. . . . . . .  B ADDR   00D8H.0 A   
+DEEADR . . . . . .  D ADDR   00F3H   A   
+DEECON . . . . . .  D ADDR   00F1H   A   
+DEEDAT . . . . . .  D ADDR   00F2H   A   
+DIVM . . . . . . .  D ADDR   0095H   A   
+EBO. . . . . . . .  B ADDR   00A8H.5 A   
+EC . . . . . . . .  B ADDR   00E8H.2 A   
+ECCU . . . . . . .  B ADDR   00E8H.4 A   
+EI2C . . . . . . .  B ADDR   00E8H.0 A   
+EIEE . . . . . . .  B ADDR   00E8H.7 A   
+EKBI . . . . . . .  B ADDR   00E8H.1 A   
+ESPI . . . . . . .  B ADDR   00E8H.3 A   
+ESR. . . . . . . .  B ADDR   00A8H.4 A   
+EST. . . . . . . .  B ADDR   00E8H.6 A   
+EWDRT. . . . . . .  B ADDR   00A8H.6 A   
+F1 . . . . . . . .  B ADDR   00D0H.1 A   
+FE . . . . . . . .  B ADDR   0098H.7 A   
+FLASHLEDS. . . . .  C ADDR   014FH   A   
+FLASHLOOP. . . . .  C ADDR   0151H   A   
+HLINE. . . . . . .  C ADDR   0103H   A   
+HLTEN. . . . . . .  B ADDR   00C8H.5 A   
+HLTRN. . . . . . .  B ADDR   00C8H.6 A   
+I2ADR. . . . . . .  D ADDR   00DBH   A   
+I2CON. . . . . . .  D ADDR   00D8H   A   
+I2DAT. . . . . . .  D ADDR   00DAH   A   
+I2EN . . . . . . .  B ADDR   00D8H.6 A   
+I2SCLH . . . . . .  D ADDR   00DDH   A   
+I2SCLL . . . . . .  D ADDR   00DCH   A   
+I2STAT . . . . . .  D ADDR   00D9H   A   
+ICA. . . . . . . .  B ADDR   00A0H.7 A   
+ICB. . . . . . . .  B ADDR   00A0H.0 A   
+ICRAH. . . . . . .  D ADDR   00ABH   A   
+ICRAL. . . . . . .  D ADDR   00AAH   A   
+ICRBH. . . . . . .  D ADDR   00AFH   A   
+ICRBL. . . . . . .  D ADDR   00AEH   A   
+IEN0 . . . . . . .  D ADDR   00A8H   A   
+IEN1 . . . . . . .  D ADDR   00E8H   A   
+IP0. . . . . . . .  D ADDR   00B8H   A   
+IP0H . . . . . . .  D ADDR   00B7H   A   
+IP1. . . . . . . .  D ADDR   00F8H   A   
+A51 MACRO ASSEMBLER  MAIN                                                                 10/17/2013 17:45:39 PAGE    13
+
+IP1H . . . . . . .  D ADDR   00F7H   A   
+KB0. . . . . . . .  B ADDR   0080H.0 A   
+KB1. . . . . . . .  B ADDR   0080H.1 A   
+KB2. . . . . . . .  B ADDR   0080H.2 A   
+KB3. . . . . . . .  B ADDR   0080H.3 A   
+KB4. . . . . . . .  B ADDR   0080H.4 A   
+KB5. . . . . . . .  B ADDR   0080H.5 A   
+KB6. . . . . . . .  B ADDR   0080H.6 A   
+KB7. . . . . . . .  B ADDR   0080H.7 A   
+KBCON. . . . . . .  D ADDR   0094H   A   
+KBMASK . . . . . .  D ADDR   0086H   A   
+KBPATN . . . . . .  D ADDR   0093H   A   
+LED1T. . . . . . .  C ADDR   01EBH   A   
+LED1W. . . . . . .  C ADDR   01E7H   A   
+LED2T. . . . . . .  C ADDR   01F2H   A   
+LED2W. . . . . . .  C ADDR   01EEH   A   
+LED3T. . . . . . .  C ADDR   01F9H   A   
+LED3W. . . . . . .  C ADDR   01F5H   A   
+LED4T. . . . . . .  C ADDR   0200H   A   
+LED4W. . . . . . .  C ADDR   01FCH   A   
+LED5T. . . . . . .  C ADDR   0207H   A   
+LED5W. . . . . . .  C ADDR   0203H   A   
+LED6T. . . . . . .  C ADDR   020EH   A   
+LED6W. . . . . . .  C ADDR   020AH   A   
+LED7T. . . . . . .  C ADDR   0215H   A   
+LED7W. . . . . . .  C ADDR   0211H   A   
+LED8T. . . . . . .  C ADDR   021CH   A   
+LED8W. . . . . . .  C ADDR   0218H   A   
+LED9T. . . . . . .  C ADDR   0223H   A   
+LED9W. . . . . . .  C ADDR   021FH   A   
+LIGHTDELAY . . . .  C ADDR   0168H   A   
+LIGHTINNER . . . .  C ADDR   016CH   A   
+MAIN . . . . . . .  C ADDR   0030H   A   
+MAINLOOP . . . . .  C ADDR   0047H   A   
+MISO . . . . . . .  B ADDR   00A0H.3 A   
+MOSI . . . . . . .  B ADDR   00A0H.2 A   
+NBUTTONDELAY . . .  C ADDR   00FCH   A   
+NCHLIGHT . . . . .  C ADDR   0093H   A   
+NEIGHT . . . . . .  C ADDR   023CH   A   
+NELEVEN. . . . . .  C ADDR   0247H   A   
+NFIFTEEN . . . . .  C ADDR   025BH   A   
+NFIVE. . . . . . .  C ADDR   0233H   A   
+NFOUR. . . . . . .  C ADDR   0230H   A   
+NFOURTEEN. . . . .  C ADDR   0256H   A   
+NMINUS . . . . . .  C ADDR   0082H   A   
+NNINE. . . . . . .  C ADDR   023FH   A   
+NONE . . . . . . .  C ADDR   0227H   A   
+NPLUS. . . . . . .  C ADDR   007AH   A   
+NRESET . . . . . .  C ADDR   0089H   A   
+NROLLOVER. . . . .  C ADDR   00EEH   A   
+NSEVEN . . . . . .  C ADDR   0239H   A   
+NSIX . . . . . . .  C ADDR   0236H   A   
+NSUM . . . . . . .  C ADDR   0092H   A   
+NSW1 . . . . . . .  C ADDR   00EAH   A   
+NSW10. . . . . . .  C ADDR   00B4H   A   
+NSW11. . . . . . .  C ADDR   00AEH   A   
+NSW12. . . . . . .  C ADDR   00A8H   A   
+NSW13. . . . . . .  C ADDR   00A2H   A   
+NSW14. . . . . . .  C ADDR   009CH   A   
+NSW2 . . . . . . .  C ADDR   00E4H   A   
+NSW3 . . . . . . .  C ADDR   00DEH   A   
+NSW4 . . . . . . .  C ADDR   00D8H   A   
+NSW5 . . . . . . .  C ADDR   00D2H   A   
+NSW6 . . . . . . .  C ADDR   00CCH   A   
+NSW7 . . . . . . .  C ADDR   00C6H   A   
+NSW8 . . . . . . .  C ADDR   00C0H   A   
+A51 MACRO ASSEMBLER  MAIN                                                                 10/17/2013 17:45:39 PAGE    14
+
+NSW9 . . . . . . .  C ADDR   00BAH   A   
+NTEN . . . . . . .  C ADDR   0242H   A   
+NTHIRTEEN. . . . .  C ADDR   0251H   A   
+NTHREE . . . . . .  C ADDR   022DH   A   
+NTWELVE. . . . . .  C ADDR   024CH   A   
+NTWO . . . . . . .  C ADDR   022AH   A   
+NZERO. . . . . . .  C ADDR   0226H   A   
+OCA. . . . . . . .  B ADDR   00A0H.6 A   
+OCB. . . . . . . .  B ADDR   0090H.6 A   
+OCC. . . . . . . .  B ADDR   0090H.7 A   
+OCD. . . . . . . .  B ADDR   00A0H.1 A   
+OCRAH. . . . . . .  D ADDR   00EFH   A   
+OCRAL. . . . . . .  D ADDR   00EEH   A   
+OCRBH. . . . . . .  D ADDR   00FBH   A   
+OCRBL. . . . . . .  D ADDR   00FAH   A   
+OCRCH. . . . . . .  D ADDR   00FDH   A   
+OCRCL. . . . . . .  D ADDR   00FCH   A   
+OCRDH. . . . . . .  D ADDR   00FFH   A   
+OCRDL. . . . . . .  D ADDR   00FEH   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P0M1 . . . . . . .  D ADDR   0084H   A   
+P0M2 . . . . . . .  D ADDR   0085H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P1M1 . . . . . . .  D ADDR   0091H   A   
+P1M2 . . . . . . .  D ADDR   0092H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P2M1 . . . . . . .  D ADDR   00A4H   A   
+P2M2 . . . . . . .  D ADDR   00A5H   A   
+P3M1 . . . . . . .  D ADDR   00B1H   A   
+P3M2 . . . . . . .  D ADDR   00B2H   A   
+PB0. . . . . . . .  B ADDR   00B8H.5 A   
+PCCU . . . . . . .  B ADDR   00F8H.4 A   
+PCL. . . . . . . .  B ADDR   00F8H.2 A   
+PCONA. . . . . . .  D ADDR   00B5H   A   
+PI2C . . . . . . .  B ADDR   00F8H.0 A   
+PIEE . . . . . . .  B ADDR   00F8H.7 A   
+PKBI . . . . . . .  B ADDR   00F8H.1 A   
+PLLEN. . . . . . .  B ADDR   00C8H.7 A   
+PSPI . . . . . . .  B ADDR   00F8H.3 A   
+PSR. . . . . . . .  B ADDR   00B8H.4 A   
+PST. . . . . . . .  B ADDR   00F8H.6 A   
+PT0AD. . . . . . .  D ADDR   00F6H   A   
+PWDRT. . . . . . .  B ADDR   00B8H.6 A   
+RESETLIGHTS. . . .  C ADDR   01D4H   A   
+RHLINE . . . . . .  C ADDR   0116H   A   
+RST. . . . . . . .  B ADDR   0090H.5 A   
+RSTSRC . . . . . .  D ADDR   00DFH   A   
+RTCCON . . . . . .  D ADDR   00D1H   A   
+RTCH . . . . . . .  D ADDR   00D2H   A   
+RTCL . . . . . . .  D ADDR   00D3H   A   
+RVLINE . . . . . .  C ADDR   013CH   A   
+SADDR. . . . . . .  D ADDR   00A9H   A   
+SADEN. . . . . . .  D ADDR   00B9H   A   
+SCL. . . . . . . .  B ADDR   0090H.2 A   
+SDA. . . . . . . .  B ADDR   0090H.3 A   
+SI . . . . . . . .  B ADDR   00D8H.3 A   
+SOUND. . . . . . .  C ADDR   01B9H   A   
+SOUND_INNER. . . .  C ADDR   01C1H   A   
+SP . . . . . . . .  D ADDR   0081H   A   
+SPCTL. . . . . . .  D ADDR   00E2H   A   
+SPDAT. . . . . . .  D ADDR   00E3H   A   
+SPICLK . . . . . .  B ADDR   00A0H.5 A   
+SPSTAT . . . . . .  D ADDR   00E1H   A   
+SS . . . . . . . .  B ADDR   00A0H.4 A   
+SSTAT. . . . . . .  D ADDR   00BAH   A   
+STA. . . . . . . .  B ADDR   00D8H.5 A   
+A51 MACRO ASSEMBLER  MAIN                                                                 10/17/2013 17:45:39 PAGE    15
+
+STARTUP. . . . . .  C ADDR   005BH   A   
+STARTUPSOUND . . .  C ADDR   017AH   A   
+STO. . . . . . . .  B ADDR   00D8H.4 A   
+TAMOD. . . . . . .  D ADDR   008FH   A   
+TCR20. . . . . . .  D ADDR   00C8H   A   
+TCR21. . . . . . .  D ADDR   00F9H   A   
+TDIR2. . . . . . .  B ADDR   00C8H.2 A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TH2. . . . . . . .  D ADDR   00CDH   A   
+TICR2. . . . . . .  D ADDR   00C9H   A   
+TIFR2. . . . . . .  D ADDR   00E9H   A   
+TISE2. . . . . . .  D ADDR   00DEH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TL2. . . . . . . .  D ADDR   00CCH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TMOD20 . . . . . .  B ADDR   00C8H.0 A   
+TMOD21 . . . . . .  B ADDR   00C8H.1 A   
+TOR2H. . . . . . .  D ADDR   00CFH   A   
+TOR2L. . . . . . .  D ADDR   00CEH   A   
+TPCR2H . . . . . .  D ADDR   00CBH   A   
+TPCR2L . . . . . .  D ADDR   00CAH   A   
+TRIM . . . . . . .  D ADDR   0096H   A   
+VLINE. . . . . . .  C ADDR   0129H   A   
+WDCON. . . . . . .  D ADDR   00A7H   A   
+WDL. . . . . . . .  D ADDR   00C1H   A   
+WFEED1 . . . . . .  D ADDR   00C2H   A   
+WFEED2 . . . . . .  D ADDR   00C3H   A   
+XTAL1. . . . . . .  B ADDR   00B0H.1 A   
+XTAL2. . . . . . .  B ADDR   00B0H.0 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
