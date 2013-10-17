@@ -20,10 +20,10 @@ main:
 mainloop:
 	nop ; Insert code to call my functions from here.
 	mov r7, #0 ; zero register r7 : Keeping count value here.
-	jb p2.0, NPLUS ; Add 1 to counter
-	jb p2.1, NMINUS ; Minus 1 from counter
-	jb p2.7, NRESET ; Store(R6) R7 then set again to zero
-	jb p2.2, NSUM ; Sum Store(R6) with Current(R7) and act on these results
+	jnb p2.0, NPLUS ; Add 1 to counter
+	jnb p2.1, NMINUS ; Minus 1 from counter
+	jnb p2.7, NRESET ; Store(R6) R7 then set again to zero
+	jnb p2.2, NSUM ; Sum Store(R6) with Current(R7) and act on these results
 	mov A, r5
 	;jnz NCHLIGHT ; If R5 = 1 then light needs to change, otherwise do nothing 
 	sjmp mainloop
