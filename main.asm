@@ -25,7 +25,7 @@ mainloop:
 	jb p2.7, NRESET ; Store(R6) R7 then set again to zero
 	jb p2.2, NSUM ; Sum Store(R6) with Current(R7) and act on these results
 	mov A, r5
-	jnz NCHLIGHT ; If R5 = 1 then light needs to change, otherwise do nothing 
+	;jnz NCHLIGHT ; If R5 = 1 then light needs to change, otherwise do nothing 
 	sjmp mainloop
 
 startup:
