@@ -47,19 +47,18 @@ startup:
 	ret
 
 NPLUS:
-	ret ; need to write code here
 	inc r7 ; increment the count holder register
 	mov A, r7
 	lcall NCHLIGHT ; call the function to change the lights
 	jz NROLLOVER ; Jump to the rollover label if a rollover occoured
 	; jz does not modify the SP, so I can use ret in NROLLOVER
-	ret
+	sjmp mainloop
 NMINUS:
 	mov A, r7
 	dec r7
 	lcall NCHLIGHT ; call the label to change the lights
 	jz NROLLOVER ; Jump if r7 was zero when minus was called
-	ret
+	sjmp mainloop
 	; jz does not modify the SP, so I can use ret in NROLLOVER
 	; jz 
 	; adding a new comment
@@ -68,10 +67,10 @@ NRESET:
 	mov 0x36, r7 ; store the value of the count at 36H
 	mov r7, #0 ; clear the current count register
 	lcall NBUTTONDELAY
-	ret
+	sjmp mainloop
 NSUM:
 	; need to write this piece of code
-	ret
+	sjmp mainloop
 NCHLIGHT: ; this function changes the lights, called when R5 != 0
 	
 	mov r5, #0 ; reset the conditional
