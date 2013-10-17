@@ -54,11 +54,13 @@ NPLUS:
 	lcall NCHLIGHT ; call the function to change the lights
 	jz NROLLOVER ; Jump to the rollover label if a rollover occoured
 	; jz does not modify the SP, so I can use ret in NROLLOVER
+	ret
 NMINUS:
 	mov A, r7
 	dec r7
 	lcall NCHLIGHT ; call the label to change the lights
 	jz NROLLOVER ; Jump if r7 was zero when minus was called
+	ret
 	; jz does not modify the SP, so I can use ret in NROLLOVER
 	; jz 
 	; adding a new comment
