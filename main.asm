@@ -61,6 +61,7 @@ NMINUS:
 	jz NROLLOVER ; Jump if r7 was zero when minus was called
 	; jz does not modify the SP, so I can use ret in NROLLOVER
 	; jz 
+	; adding a new comment
 NRESET:
 	ret ; need to write code here
 	mov 0x36, r7 ; store the value of the count at 36H
