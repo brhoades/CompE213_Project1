@@ -69,7 +69,19 @@ NRESET:
 	lcall NBUTTONDELAY
 	sjmp mainloop
 NSUM:
-	; need to write this piece of code
+	; use ADDC to perform the addition while using the carry bit
+	mov A, 0x36 ; move the stored value into A
+	addc A, r7 ; set the carry if there is a ROLLOVER
+	; use jc to jump to NROLLOVER if the carry bit has been set above
+	cpl C ; complement the carry bit
+	jnc NROLLOVER ; jump to rollover
+	cpl C ; complement the carry bit
+	; if the carry is not set, then use NCHLIGHT to light up the value on the LEDs
+	mov 0x39, r7 ; store the r7 value in memory location 0x39
+	mov r7, A ; put the computed value in R7 if it does not rollover
+	lcall NCHLIGHT
+	mov r7, 0x39 ; reset the correct r7 value.
+	
 	sjmp mainloop
 NCHLIGHT: ; this function changes the lights, called when R5 != 0
 	
@@ -79,6 +91,18 @@ NCHLIGHT: ; this function changes the lights, called when R5 != 0
 	cjne A, #15, NSW14 ; GoTo 14  only if this is not 15
 	acall NFIFTEEN
 	ret
+
+NROLLOVER:
+	; sound buzzer here
+	mov R0, #0x7D
+	mov R1, #0x00
+	mov R2, #0x66
+	mov R3, #0x0E
+	acall sound
+	lcall NBUTTONDELAY ; 
+	sjmp MAINLOOP;
+	;ret ; return after this is called, because lcall is used for NBUTTONDELAY
+
 NSW14:
 	; Note: A should not change since there are no iterrupts running
 	cjne A, #14, NSW13
@@ -136,17 +160,6 @@ NSW1:
 	acall NONE
 	ret
 	; End of the number switching code
-	
-	ret ; 
-NROLLOVER:
-	; sound buzzer here
-	mov R0, #0x7D
-	mov R1, #0x00
-	mov R2, #0x66
-	mov R3, #0x0E
-	acall sound
-	lcall NBUTTONDELAY ; 
-	ret ; return after this is called, because lcall is used for NBUTTONDELAY
 	
 NBUTTONDELAY:
 	mov r0, #0xFE
